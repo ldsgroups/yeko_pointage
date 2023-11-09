@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yeko_pointage/features/template/presentation/pages/template_page.dart';
+import 'package:yeko_pointage/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:yeko_pointage/themes/themes.dart';
 
 void main() async {
@@ -20,7 +20,7 @@ class CoreApp extends StatelessWidget {
       theme: lightTheme(),
       darkTheme: darkTheme(),
       restorationScopeId: 'app',
-      home: const TemplatePage(),
+      home: const SignInPage(),
     );
   }
 }

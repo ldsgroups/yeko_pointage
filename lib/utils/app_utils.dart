@@ -1,15 +1,68 @@
- import 'dart:math';
+import 'package:flutter/material.dart';
 
 class AppUtils {
   // Prevent the utility class from being instantiated.
   AppUtils._();
 
-
-  // Example utility method 2: Generating a random number between min and max.
-  static int generateRandomNumber(int min, int max) {
-    return min + (Random().nextInt(max - min + 1));
+  /// Shows a snack-bar with the given [content] in the [context].
+  static void showSnackBar(BuildContext context, String content) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(content)));
   }
 
-  // Add more utility methods as needed...
+  /// Displays an alert dialog to the user.
+  ///
+  /// The [title] parameter is the title of the dialog.
+  /// The [content] parameter is the content of the dialog.
+  /// The [confirmText] parameter is the text to display on the confirm button.
+  /// The [onConfirm] parameter is the function to call when the confirm button is pressed.
+  /// The [cancelText] parameter is the text to display on the cancel button.
+  /// The [onCancel] parameter is the function to call when the cancel button is pressed.
+  static Future<void> showAlertDialog({
+    required BuildContext context,
+    required String content,
+    String? title,
+    String? confirmText,
+    String? cancelText,
+    int? duration = 2500,
+    VoidCallback? onConfirm,
+    VoidCallback? onCancel,
+  }) async {
+    // Set initial values for title, confirmText and cancelText if they are null
+    title ??= 'Alert';
+    onConfirm ??= () => Navigator.pop(context);
+    onCancel ??= () => Navigator.pop(context);
+
+    // if confirmText and cancelText are null, pop the dialog after 2500 ms
+    if (confirmText == null && cancelText == null) {
+      Future.delayed(
+        Duration(milliseconds: duration!),
+        () => Navigator.pop(context),
+      );
+    }
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title!),
+          content: Text(content),
+          actions: confirmText == null && cancelText == null
+              ? null
+              : [
+                  if (cancelText != null)
+                    TextButton(
+                      onPressed: onCancel,
+                      child: Text(cancelText),
+                    ),
+                  if (confirmText != null)
+                    TextButton(
+                      onPressed: onConfirm,
+                      child: Text(confirmText),
+                    ),
+                ],
+        );
+      },
+    );
+  }
 }
-    

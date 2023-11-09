@@ -1,10 +1,14 @@
 class NoParams {}
 
-class TemplateParams {}
+class TemplateParams {
+  const TemplateParams({this.template});
 
-class PokemonParams {
-  final String id;
-  const PokemonParams({
-    required this.id,
-  });
+  final String? template;
+}
+
+class SignInParams {
+  const SignInParams({required this.email, required this.password});
+
+  final String email;
+  final String password;
 }
