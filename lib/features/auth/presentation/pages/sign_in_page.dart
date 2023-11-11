@@ -19,10 +19,13 @@ class SignInPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    final emailController = useTextEditingController(text: '');
-    final passwordController = useTextEditingController(text: '');
+    final emailController =
+        useTextEditingController(text: 'kassidarius@gmail.com');
+    /* cspell:disable */
+    final passwordController = useTextEditingController(text: 'Aazzeerrtt88');
+    /* cspell:enable */
 
-    // final signInState = ref.watch(signInControllerProvider);
+    final signInState = ref.watch(signInControllerProvider);
 
     final size = MediaQuery.of(context).size;
 
@@ -51,7 +54,7 @@ class SignInPage extends HookConsumerWidget {
 
     return Scaffold(
       body: LoadingStateWrapper(
-        isLoading: false, // signInState,
+        isLoading: signInState,
         child: Flex(
           mainAxisAlignment: MainAxisAlignment.center,
           direction: Axis.vertical,

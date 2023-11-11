@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_manual_providers_as_generated_provider_dependency
-import 'package:appwrite/models.dart';
 import 'package:data_connection_checker_tv/data_connection_checker.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/features/auth/business/business.dart';
 import 'package:yeko_pointage/features/auth/data/data.dart';
@@ -14,7 +14,7 @@ class SignInController extends _$SignInController {
   @override
   bool build() => false;
 
-  Future<Either<Failure, Session>> eitherFailureOrSignIn({
+  Future<Either<Failure, AuthResponse>> eitherFailureOrSignIn({
     required String email,
     required String password,
   }) async {
@@ -22,7 +22,7 @@ class SignInController extends _$SignInController {
 
     final repository = SignInRepositoryImpl(
       remoteDataSource: SignInRemoteDataSourceImpl(
-        account: ref.watch(appwriteAccountProvider),
+        goTrueClient: ref.watch(supabaseAuthProvider),
       ),
       networkInfo: NetworkInfoImpl(
         DataConnectionChecker(),

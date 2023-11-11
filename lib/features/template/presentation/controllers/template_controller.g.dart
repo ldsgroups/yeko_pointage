@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'template_provider.dart';
+part of 'template_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$templateProviderHash() => r'7b394c24bfbb27bd91465656354e9f857f45e01d';
+String _$templateProviderHash() => r'dd88eae70d2306ebc1e5c69ba2e83bede6829791';
 
 /// See also [TemplateProvider].
 @ProviderFor(TemplateProvider)

@@ -23,16 +23,12 @@ class CustomMaterialButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return MaterialButton(
       minWidth: double.infinity,
       height: 50,
-      color: isInverted
-          ? colorScheme.errorContainer
-          : colorScheme.primary,
-      textColor: isInverted
-          ? colorScheme.onPrimaryContainer
-          : colorScheme.onPrimary,
+      color: isInverted ? colorScheme.inverseSurface : colorScheme.primary,
+      textColor: isInverted ? colorScheme.onTertiary : colorScheme.onPrimary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),

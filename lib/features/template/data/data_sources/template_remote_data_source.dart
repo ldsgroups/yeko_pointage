@@ -1,4 +1,4 @@
-import 'package:appwrite/appwrite.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yeko_pointage/core/errors/exceptions.dart';
 import 'package:yeko_pointage/core/params/params.dart';
 import 'package:yeko_pointage/features/template/data/models/template_model.dart';
@@ -8,9 +8,9 @@ abstract class TemplateRemoteDataSource {
 }
 
 class TemplateRemoteDataSourceImpl implements TemplateRemoteDataSource {
-  TemplateRemoteDataSourceImpl({required this.db});
+  TemplateRemoteDataSourceImpl({required this.goTrueClient});
 
-  final Databases db;
+  final GoTrueClient goTrueClient;
 
   @override
   Future<TemplateModel> getTemplate({

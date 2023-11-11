@@ -1,50 +1,25 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:yeko_pointage/core/constants/constants.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'providers.g.dart';
 
-// Appwrite
+// Supabase
 
 @riverpod
-Client appwriteClient(AppwriteClientRef ref) {
-  return Client()
-      .setEndpoint(AppwriteConstants.endPoint)
-      .setProject(AppwriteConstants.projectId)
-      .setSelfSigned();
+SupabaseClient supabaseClient(SupabaseClientRef ref) {
+  return Supabase.instance.client;
 }
 
 @riverpod
-Account appwriteAccount(AppwriteAccountRef ref) {
-  final client = ref.watch(appwriteClientProvider);
+GoTrueClient supabaseAuth(SupabaseAuthRef ref) {
+  final client = ref.watch(supabaseClientProvider);
 
-  return Account(client);
+  return client.auth;
 }
 
 @riverpod
-Databases appwriteDatabase(AppwriteDatabaseRef ref) {
-  final client = ref.watch(appwriteClientProvider);
+SupabaseStorageClient supabaseStorage(SupabaseStorageRef ref) {
+  final client = ref.watch(supabaseClientProvider);
 
-  return Databases(client);
-}
-
-@riverpod
-Functions appwriteFunction(AppwriteFunctionRef ref) {
-  final client = ref.watch(appwriteClientProvider);
-
-  return Functions(client);
-}
-
-@riverpod
-Storage appwriteStorage(AppwriteStorageRef ref) {
-  final client = ref.watch(appwriteClientProvider);
-
-  return Storage(client);
-}
-
-@riverpod
-Realtime appwriteRealtime(AppwriteRealtimeRef ref) {
-  final client = ref.watch(appwriteClientProvider);
-
-  return Realtime(client);
+  return client.storage;
 }

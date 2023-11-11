@@ -1,30 +1,31 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yeko_pointage/core/errors/exceptions.dart';
 import 'package:yeko_pointage/core/params/params.dart';
 
 abstract class SignInRemoteDataSource {
-  Future<Session> runSignIn({required SignInParams signInParams});
+  Future<AuthResponse> runSignIn({required SignInParams signInParams});
 }
 
 class SignInRemoteDataSourceImpl implements SignInRemoteDataSource {
-  SignInRemoteDataSourceImpl({required this.account});
+  SignInRemoteDataSourceImpl({required this.goTrueClient});
 
-  final Account account;
+  final GoTrueClient goTrueClient;
 
   @override
-  Future<Session> runSignIn({
+  Future<AuthResponse> runSignIn({
     required SignInParams signInParams,
   }) async {
     try {
-      final response = await account.createEmailSession(
+      final response = await goTrueClient.signInWithPassword(
         email: signInParams.email,
         password: signInParams.password,
       );
+      print('=======[ SUCCESS ]=======');
+      print(response.session?.user.email);
       return response;
-    } on AppwriteException catch (e) {
+    } on AuthException catch (e) {
       print('=======[ Appwrite ERROR ]=======');
-      print(e.message ?? 'Une erreur appwrite');
+      print(e.message);
       throw ServerException();
     } catch (e) {
       print('=======[ Local ERROR ]=======');
