@@ -3,47 +3,45 @@ import 'package:flutter/services.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
+    required this.hintText,
     required TextEditingController controller,
-    required this.size,
     super.key,
-    this.labelText,
-    this.inputFormatters,
-    this.isBordered = true,
-    this.obscureText = false,
     this.validator,
-    this.onFieldSubmitted,
     this.keyboardType,
+    this.enabled = true,
+    this.inputFormatters,
+    this.onFieldSubmitted,
+    this.obscureText = false,
     this.textInputAction = TextInputAction.next,
   }) : _controller = controller;
 
-  final String? labelText;
+  final String hintText;
   final TextEditingController _controller;
-  final Size size;
-  final bool isBordered;
+  final bool enabled;
   final bool obscureText;
-  final List<TextInputFormatter>? inputFormatters;
-  final String? Function(String?)? validator;
-  final void Function(String)? onFieldSubmitted;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
+  final String? Function(String?)? validator;
+  final void Function(String)? onFieldSubmitted;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: _controller,
-      onFieldSubmitted: onFieldSubmitted,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      inputFormatters: inputFormatters,
-      validator: validator,
-      obscureText: obscureText,
-      onTapOutside: (p0) => FocusScope.of(context).unfocus(),
-      decoration: InputDecoration(
-        labelText: labelText,
-        border: isBordered ? const OutlineInputBorder() : InputBorder.none,
-        contentPadding: EdgeInsets.symmetric(
-          vertical: size.width * 0.035,
-          horizontal: isBordered ? size.width * 0.035 : 0,
+    return Card(
+      child: TextFormField(
+        validator: validator,
+        controller: _controller,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
+        textInputAction: textInputAction,
+        onFieldSubmitted: onFieldSubmitted,
+        onTapOutside: (p0) => FocusScope.of(context).unfocus(),
+        decoration: InputDecoration(
+          enabled: enabled,
+          hintText: hintText,
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
         ),
       ),
     );

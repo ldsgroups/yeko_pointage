@@ -3,7 +3,7 @@ import 'package:yeko_pointage/core/errors/exceptions.dart';
 import 'package:yeko_pointage/core/params/params.dart';
 
 abstract class SignInRemoteDataSource {
-  Future<AuthResponse> runSignIn({required SignInParams signInParams});
+  Future<void> runSignIn({required SignInParams signInParams});
 }
 
 class SignInRemoteDataSourceImpl implements SignInRemoteDataSource {
@@ -12,24 +12,17 @@ class SignInRemoteDataSourceImpl implements SignInRemoteDataSource {
   final GoTrueClient goTrueClient;
 
   @override
-  Future<AuthResponse> runSignIn({
+  Future<void> runSignIn({
     required SignInParams signInParams,
   }) async {
     try {
-      final response = await goTrueClient.signInWithPassword(
+      await goTrueClient.signInWithPassword(
         email: signInParams.email,
         password: signInParams.password,
       );
-      print('=======[ SUCCESS ]=======');
-      print(response.session?.user.email);
-      return response;
-    } on AuthException catch (e) {
-      print('=======[ Appwrite ERROR ]=======');
-      print(e.message);
+    } on AuthException catch (_) {
       throw ServerException();
-    } catch (e) {
-      print('=======[ Local ERROR ]=======');
-      print(e);
+    } catch (_) {
       throw ServerException();
     }
   }

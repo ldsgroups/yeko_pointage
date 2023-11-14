@@ -1,29 +1,81 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+// ignore_for_file: scoped_providers_should_specify_dependencies
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yeko_pointage/commons/commons.dart';
+import 'package:yeko_pointage/features/auth/business/entities/user_entity.dart';
+import 'package:yeko_pointage/features/auth/presentation/presentation.dart';
 import 'package:yeko_pointage/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const CoreApp());
+  // Checking initial page
+  group('CoreApp', () {
+    testWidgets('Should show LoadingPage when authState is loading',
+        (tester) async {
+      await tester.pumpWidget(const ProviderScope(child: CoreApp()));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      expect(find.byType(LoadingPage), findsOneWidget);
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    testWidgets(
+        'Should show SignInPage when authState is data and user is null',
+        (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            isAuthenticatedProvider.overrideWith((ref) => null),
+          ],
+          child: const CoreApp(),
+        ),
+      );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      expect(find.byType(SignInPage), findsOneWidget);
+    });
+
+    testWidgets(
+        'Should show LockingPage when authState is data and user is not null',
+        (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            isAuthenticatedProvider.overrideWith((ref) {
+              return UserEntity(
+                id: 'id',
+                email: 'email',
+                phone: 'phone',
+                lastSignInAt: DateTime.now().toIso8601String(),
+              );
+            }),
+          ],
+          child: const CoreApp(),
+        ),
+      );
+
+      expect(find.byType(LockingPage), findsOneWidget);
+    });
+  });
+
+  // SignIn
+  group('SignIn', () {
+    testWidgets('Should success login user then redirect to LockingPage',
+        (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            isAuthenticatedProvider.overrideWith((ref) => null),
+          ],
+          child: const CoreApp(),
+        ),
+      );
+
+      // Check if is sign in page and connect button exist
+      expect(find.text('Se connecter'), findsOneWidget);
+
+      // first input with email hint text
+      await tester.tap(find.byType(TextFormField));
+      tester.testTextInput.enterText('kassidarius@gmail.com');
+
+      // last input with password int text
+    });
   });
 }

@@ -2,7 +2,6 @@
 import 'package:data_connection_checker_tv/data_connection_checker.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/features/auth/business/business.dart';
 import 'package:yeko_pointage/features/auth/data/data.dart';
@@ -14,7 +13,7 @@ class SignInController extends _$SignInController {
   @override
   bool build() => false;
 
-  Future<Either<Failure, AuthResponse>> eitherFailureOrSignIn({
+  Future<Either<Failure, void>> eitherFailureOrSignIn({
     required String email,
     required String password,
   }) async {
