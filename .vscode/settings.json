@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "explicit"
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -34,6 +34,8 @@
   ],
   "cSpell.words": [
     "fpdart",
+    "grey",
+    "LTRB",
     "prefs",
     "unfocus",
     "yeko"
