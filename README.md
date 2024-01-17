@@ -15,6 +15,7 @@ Yeko Pointage est une application mobile qui permet aux professeurs de prendre l
   - [ ] Schedule Recognize Popup
   - [x] Home Attendance Screen
   - [ ] Set range of [1 - 5] of participation to the student
+  - [ ] Participations Set End Successful Popup
   - [x] Do You Have to Give A Homework Popup
   - [ ] Homework Screen
   - [ ] Session End Successful Popup
