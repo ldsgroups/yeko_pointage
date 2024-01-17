@@ -1,8 +1,8 @@
-import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yeko_pointage/core/core.dart';
-import 'package:yeko_pointage/models/models.dart';
 
 part 'auth_api.g.dart';
 
@@ -10,60 +10,85 @@ part 'auth_api.g.dart';
 AuthAPI authAPI(
   AuthAPIRef ref,
 ) =>
-    AuthAPI(dio: ref.watch(dioInstanceAuthProvider));
+    AuthAPI(
+      goTrueClient: ref.watch(supabaseAuthProvider),
+    );
 
 abstract class IAuthAPI {
-  FutureEither<TokenModel?> signInWithUidAndPassword({
-    required String uid,
+  Future<String?> currentUserId();
+
+  FutureEither<String?> signInWithUidAndPassword({
+    required String email,
     required String password,
   });
+
+  FutureEitherVoid signOut();
 }
 
 class AuthAPI implements IAuthAPI {
-  AuthAPI({required Dio dio}) : _dio = dio;
+  AuthAPI({required GoTrueClient goTrueClient}) : _goTrueClient = goTrueClient;
 
-  final Dio _dio;
+  final GoTrueClient _goTrueClient;
 
   @override
-  FutureEither<TokenModel?> signInWithUidAndPassword({
-    required String uid,
+  Future<String?> currentUserId() async {
+    try {
+      return _goTrueClient.currentUser?.id;
+    } on AuthException {
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  FutureEither<String?> signInWithUidAndPassword({
+    required String email,
     required String password,
   }) async {
     try {
-      final response = await _dio.request<Mapper<dynamic>>(
-        '/auth/sign-in',
-        options: Options(
-          method: 'POST',
-        ),
-        data: {
-          'uid': uid,
-          'password': password,
-        },
+      final response = await _goTrueClient.signInWithPassword(
+        email: email,
+        password: password,
       );
 
-      if (response.statusCode == 201) {
-        final data = response.data!;
-        final dt = TokenModel.fromJson(json: data);
-        return right(dt);
-      } else {
-        throw Exception();
+      return right(response.user?.id);
+    } on AuthException catch (err) {
+      if (kDebugMode) {
+        print('[E_POSTGRES] ${err.message}');
       }
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 400 || e.response?.statusCode == 401) {
-        return left(
-          ServerFailure(
-            errorMessage: 'Identifiant ou mot de passe incorrect',
-          ),
-        );
-      } else {
-        return left(
-          ServerFailure(
-            errorMessage: 'Une erreur est survenue',
-          ),
-        );
-      }
+      return left(ServerFailure(errorMessage: err.message));
     } catch (e) {
-      return left(ServerFailure(errorMessage: 'Une erreur est survenue'));
+      if (kDebugMode) {
+        print('[E_LOCAL] $e');
+      }
+      return left(
+        ServerFailure(
+          errorMessage: 'Une erreur est survenue',
+        ),
+      );
+    }
+  }
+
+  @override
+  FutureEitherVoid signOut() async {
+    try {
+      await _goTrueClient.signOut();
+      return right(null);
+    } on AuthException catch (err) {
+      if (kDebugMode) {
+        print('[E_POSTGRES] ${err.message}');
+      }
+      return left(ServerFailure(errorMessage: err.message));
+    } catch (e) {
+      if (kDebugMode) {
+        print('[E_LOCAL] $e');
+      }
+      return left(
+        ServerFailure(
+          errorMessage: 'Une erreur est survenue',
+        ),
+      );
     }
   }
 }

@@ -7,7 +7,7 @@ part of 'home_controller.dart';
 // **************************************************************************
 
 String _$isAttendanceCheckingCompletedHash() =>
-    r'51ddea5fbf7954c642cc4d76a0f747a75b115a67';
+    r'38dfaef04c72532f1b521d54dbb963f1469b73cd';
 
 /// See also [IsAttendanceCheckingCompleted].
 @ProviderFor(IsAttendanceCheckingCompleted)
@@ -38,7 +38,7 @@ final classDataProvider =
 );
 
 typedef _$ClassData = AutoDisposeNotifier<ClassModel>;
-String _$attendanceRecordsHash() => r'7fbb6949851c35ae9741fc980458129494041e07';
+String _$attendanceRecordsHash() => r'c55a7775538bc8e24035aaa617c548ea0f5f2b3e';
 
 /// See also [AttendanceRecords].
 @ProviderFor(AttendanceRecords)
@@ -54,7 +54,24 @@ final attendanceRecordsProvider = AutoDisposeNotifierProvider<AttendanceRecords,
 );
 
 typedef _$AttendanceRecords = AutoDisposeNotifier<List<AttendanceModel>>;
-String _$homeControllerHash() => r'64e2ac693f8eb04003b36e786b4088ebca1aaa0a';
+String _$participationRecordsHash() =>
+    r'6a38456e13bf3a4ae2782dab308fdead3dc6afba';
+
+/// See also [ParticipationRecords].
+@ProviderFor(ParticipationRecords)
+final participationRecordsProvider = AutoDisposeNotifierProvider<
+    ParticipationRecords, List<ParticipationModel>>.internal(
+  ParticipationRecords.new,
+  name: r'participationRecordsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$participationRecordsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ParticipationRecords = AutoDisposeNotifier<List<ParticipationModel>>;
+String _$homeControllerHash() => r'18fcb5c8d88aed745c277e7f349bb42a345e4a9f';
 
 /// See also [HomeController].
 @ProviderFor(HomeController)

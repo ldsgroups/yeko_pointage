@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yeko_pointage/commons/divider.dart';
-import 'package:yeko_pointage/core/constants/constants.dart';
+import 'package:yeko_pointage/commons/commons.dart';
+import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/features/home/controllers/home_controller.dart';
 import 'package:yeko_pointage/features/home/widgets/widgets.dart';
+import 'package:yeko_pointage/models/models.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -18,24 +18,23 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  late String schoolId;
-  late String schoolName;
+  final schoolId = PreferenceUtils.getString(PrefConst.schoolId);
+  final schoolName = PreferenceUtils.getString(PrefConst.schoolName);
 
   @override
   void initState() {
-    super.initState();
     initializeClassData();
+    super.initState();
   }
 
-  Future<void> initializeClassData() async {
-    schoolId = '';
-    schoolName = '';
+  Future<ClassModel> initializeClassData() async {
+    final c = await ref.read(homeControllerProvider.notifier).getClass();
 
-    await ref.read(homeControllerProvider.notifier).getClass();
+    await ref
+        .read(attendanceRecordsProvider.notifier)
+        .initializeAttendanceRecord();
 
-    final prefs = await SharedPreferences.getInstance();
-    schoolId = prefs.getString(SharedPrefsConstants.schoolId) ?? '';
-    schoolName = prefs.getString(SharedPrefsConstants.schoolName) ?? '';
+    return c;
   }
 
   @override
@@ -76,7 +75,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               schoolName: schoolName,
               students: currentClass.students,
             )
-          : PhonePage(students: currentClass.students),
+          : const PhonePage(),
     );
   }
 }

@@ -6,7 +6,7 @@ part of 'student_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$studentAPIHash() => r'f426a4d6604db0168a16a05c5a5698b54ea23f40';
+String _$studentAPIHash() => r'fea6777704ac6e5122c1c9cf71213b11a3934f53';
 
 /// See also [studentAPI].
 @ProviderFor(studentAPI)

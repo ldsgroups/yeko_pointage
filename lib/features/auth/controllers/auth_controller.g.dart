@@ -6,11 +6,12 @@ part of 'auth_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$isAuthenticatedHash() => r'47c5dbac27795ba358958ef784ccebbf9879844f';
+String _$isAuthenticatedHash() => r'a952a9cc8d50d48156ec0aeb535ffef3170546f9';
 
 /// See also [isAuthenticated].
 @ProviderFor(isAuthenticated)
-final isAuthenticatedProvider = AutoDisposeFutureProvider<bool>.internal(
+final isAuthenticatedProvider =
+    AutoDisposeFutureProvider<IsAuthenticatedModel>.internal(
   isAuthenticated,
   name: r'isAuthenticatedProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,8 +21,8 @@ final isAuthenticatedProvider = AutoDisposeFutureProvider<bool>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef IsAuthenticatedRef = AutoDisposeFutureProviderRef<bool>;
-String _$tabletOwnerClassHash() => r'e0cb335f559d868bec1eedccb364ff16e2d91a0c';
+typedef IsAuthenticatedRef = AutoDisposeFutureProviderRef<IsAuthenticatedModel>;
+String _$tabletOwnerClassHash() => r'53263546f555a5be27f05d9422701eb9baef8af6';
 
 /// See also [TabletOwnerClass].
 @ProviderFor(TabletOwnerClass)
@@ -52,7 +53,7 @@ final classesDataProvider =
 );
 
 typedef _$ClassesData = AutoDisposeNotifier<List<ClassModel>>;
-String _$authControllerHash() => r'f743f1f3b12f7f9fcb1b94c647c73a5d605a7f10';
+String _$authControllerHash() => r'19f6c1c5d889406946e23587c11528421d18f63f';
 
 /// See also [AuthController].
 @ProviderFor(AuthController)

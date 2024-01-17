@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_manual_providers_as_generated_provider_dependency
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yeko_pointage/apis/apis.dart';
 import 'package:yeko_pointage/models/models.dart';
 
@@ -11,7 +10,7 @@ class ClassesData extends _$ClassesData {
   @override
   List<ClassModel> build() => [];
 
-  Future<void> updateClassesList(List<ClassModel> clsx) async => state = clsx;
+  Future<void> updateClassesList(List<ClassModel> lc) async => state = lc;
 }
 
 @riverpod
@@ -37,10 +36,8 @@ class SettingController extends _$SettingController {
     required String schoolId,
     required String classId,
   }) async {
-    final prefs = await SharedPreferences.getInstance();
-
     final classAPI = ref.read(classAPIProvider);
-    final classLocalAPI = ref.read(classLocalAPIProvider(prefs));
+    final classLocalAPI = ref.read(classLocalAPIProvider);
 
     final payload = await classAPI.getClass(
       schoolId: schoolId,

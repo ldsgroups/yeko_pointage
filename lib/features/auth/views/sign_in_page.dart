@@ -34,9 +34,9 @@ class SignInPage extends HookConsumerWidget {
       // Validate form before process signIn
       final isValid = _formKey.currentState?.validate();
       if (isValid!) {
-        final signInController = ref.read(authControllerProvider.notifier);
+        final authCtrl = ref.read(authControllerProvider.notifier);
 
-        final response = await signInController.signInWithUidAndPassword(
+        final response = await authCtrl.signInWithUidAndPassword(
           uid: uidController.text.trim().toLowerCase(),
           password: passwordController.text.trim(),
         );
@@ -46,11 +46,31 @@ class SignInPage extends HookConsumerWidget {
             context,
             l.errorMessage,
           ),
-          (r) => Navigator.pushAndRemoveUntil(
-            context,
-            ScanPage.route(),
-            (route) => false,
-          ),
+          (userId) async {
+            final me = await authCtrl.me(userId: userId!);
+
+            await me.fold(
+              (l) {
+                return AppUtils.infoDialog(
+                  context: context,
+                  text: "Votre compte n'est pas lié à une école",
+                  onPressed: () {
+                    ref.read(authControllerProvider.notifier).signOut();
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+              (r) {
+                if (r != null && r.schoolId != null) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    ScanPage.route(),
+                    (route) => false,
+                  );
+                }
+              },
+            );
+          },
         );
       }
     }
@@ -72,7 +92,7 @@ class SignInPage extends HookConsumerWidget {
 
                 // Form part
                 SizedBox(
-                  width: isTablet ? size.width * 0.55 : size.width,
+                  width: isTablet ? size.width * 0.55 : size.width * 0.95,
                   child: Form(
                     key: _formKey,
                     child: Column(

@@ -1,6 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/models/models.dart';
 
@@ -10,7 +10,7 @@ part 'student_api.g.dart';
 StudentAPI studentAPI(
   StudentAPIRef ref,
 ) =>
-    StudentAPI(dio: ref.watch(dioInstanceProvider));
+    StudentAPI(db: ref.watch(supabaseClientProvider));
 
 abstract class IStudentAPI {
   FutureEither<List<StudentModel>> getStudents({
@@ -20,9 +20,9 @@ abstract class IStudentAPI {
 }
 
 class StudentAPI implements IStudentAPI {
-  StudentAPI({required Dio dio}) : _dio = dio;
+  StudentAPI({required SupabaseClient db}) : _db = db;
 
-  final Dio _dio;
+  final SupabaseClient _db;
 
   @override
   FutureEither<List<StudentModel>> getStudents({
@@ -30,34 +30,24 @@ class StudentAPI implements IStudentAPI {
     required String classId,
   }) async {
     try {
-      final response = await _dio.get<Mapper<dynamic>>(
-        '/schools/$schoolId/class/$classId',
-        queryParameters: {},
-      );
+      final response = await _db
+          .from('students')
+          .select()
+          .eq('school_id', schoolId)
+          .eq('class_id', classId)
+          .then(
+            (value) =>
+                value.map((e) => StudentModel.fromJson(json: e)).toList(),
+          );
 
-      if (response.statusCode == 200) {
-        final data = response.data?['data'] as List;
-        print('===============');
-        print({data});
-        return right(
-          data
-              .map(
-                (e) => StudentModel.fromJson(json: e as Mapper<dynamic>),
-              )
-              .toList(),
-        );
-      } else {
-        return right([]);
-      }
-    } on DioException catch (e) {
-      print(e);
+      return right(response);
+    } on PostgrestException catch (_) {
       return left(
         ServerFailure(
           errorMessage: 'Une erreur est survenue',
         ),
       );
     } catch (e) {
-      print(e);
       return left(
         ServerFailure(
           errorMessage: 'Une erreur est survenue',

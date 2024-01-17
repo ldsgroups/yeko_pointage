@@ -1,5 +1,8 @@
 export './attendance_model.dart';
 export './class_model.dart';
+export './homework_model.dart';
+export './is_authenticated_model.dart';
+export './participation_model.dart';
 export './school_model.dart';
 export './student_model.dart';
 export './token_model.dart';

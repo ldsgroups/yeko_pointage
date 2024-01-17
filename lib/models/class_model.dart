@@ -33,6 +33,7 @@ class ClassModel {
       'id': id,
       'name': name,
       'students': students,
+      'updated_at': DateTime.now().toIso8601String(),
     };
   }
 

@@ -30,6 +30,7 @@ class UserModel {
       'email': email,
       'username': username,
       'school_id': schoolId,
+      'updated_at': DateTime.now().toIso8601String(),
     };
   }
 

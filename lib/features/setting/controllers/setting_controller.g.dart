@@ -6,7 +6,7 @@ part of 'setting_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$classesDataHash() => r'898334be701c073d5ead6259235e78ed63c69bee';
+String _$classesDataHash() => r'c34b49fc6b0d130110667a8b78e4c4a874df8983';
 
 /// See also [ClassesData].
 @ProviderFor(ClassesData)
@@ -21,7 +21,7 @@ final classesDataProvider =
 );
 
 typedef _$ClassesData = AutoDisposeNotifier<List<ClassModel>>;
-String _$settingControllerHash() => r'570223961dd6404db6c05e324a22c94c2c84d6ff';
+String _$settingControllerHash() => r'bc6f85bb2c482b9180212b9570ffcc425514a836';
 
 /// See also [SettingController].
 @ProviderFor(SettingController)

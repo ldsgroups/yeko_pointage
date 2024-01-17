@@ -63,7 +63,7 @@ class TabletPage extends HookConsumerWidget {
                       ),
                     ),
                     colDivider,
-                    StudentList(students: students),
+                    const StudentList(),
                   ],
                 ),
               ),

@@ -1,6 +1,5 @@
 class AppConstants {
   static String appDisplayName = 'Yeko Pointage';
-  static String baseUrl = 'http://192.168.1.23:3333/api/v1';
 }
 
 // Educational Levels and Grades

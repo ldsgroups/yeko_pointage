@@ -10,22 +10,35 @@ class TabletOwnerClass extends _$TabletOwnerClass {
   @override
   ClassModel? build() => null;
 
-  void updateCurrentStore(ClassModel cls) => state = cls;
+  Future<void> updateCurrentStore(ClassModel cls) async => state = cls;
 }
 
 @riverpod
-Future<bool> isAuthenticated(IsAuthenticatedRef ref) async {
+Future<IsAuthenticatedModel> isAuthenticated(IsAuthenticatedRef ref) async {
   final authCtrl = ref.read(authControllerProvider.notifier);
-  final me = await authCtrl.me();
+  final userId = await authCtrl.currentUserId();
+  const authValue = IsAuthenticatedModel();
+
+  if (userId == null) {
+    return authValue;
+  }
+
+  final me = await authCtrl.me(userId: userId);
 
   return me.fold(
-    (l) => false,
+    (l) => authValue,
     (r) {
       if (r != null && r.schoolId != null) {
-        return true;
+        return authValue.copyWith(
+          isAuthenticated: true,
+          isLinkedToASchool: true,
+        );
       }
 
-      return false;
+      return authValue.copyWith(
+        isAuthenticated: true,
+        isLinkedToASchool: false,
+      );
     },
   );
 }
@@ -43,7 +56,13 @@ class AuthController extends _$AuthController {
   @override
   bool build() => false;
 
-  FutureEither<TokenModel?> signInWithUidAndPassword({
+  Future<String?> currentUserId() async {
+    final currentUser = await ref.watch(authAPIProvider).currentUserId();
+
+    return currentUser;
+  }
+
+  FutureEither<String?> signInWithUidAndPassword({
     required String uid,
     required String password,
   }) async {
@@ -51,34 +70,23 @@ class AuthController extends _$AuthController {
 
     final authAPI = ref.read(authAPIProvider);
     final payload = await authAPI.signInWithUidAndPassword(
-      uid: uid,
+      email: uid,
       password: password,
     );
-
-    // if is right implement
-    if (payload.isRight()) {
-      final token = payload.getOrElse((r) => null);
-      if (token != null) {
-        await PreferenceUtils.setString(
-          SharedPrefsConstants.token,
-          token.token,
-        );
-        await PreferenceUtils.setString(
-          SharedPrefsConstants.tokenExpiresAt,
-          token.expiresAt.toIso8601String(),
-        );
-      }
-    }
 
     state = false;
     return payload;
   }
 
-  FutureEither<UserModel?> me() async {
+  FutureEither<UserModel?> me({required String userId}) async {
     final authAPI = ref.read(userAPIProvider);
-    final payload = await authAPI.me();
+    final payload = await authAPI.me(userId: userId);
 
     return payload;
+  }
+
+  Future<void> signOut() async {
+    await ref.read(authAPIProvider).signOut();
   }
 
   Future<SchoolModel?> getSchool({required String schoolId}) async {
@@ -95,12 +103,12 @@ class AuthController extends _$AuthController {
       (r) async {
         if (r != null) {
           await PreferenceUtils.setString(
-            SharedPrefsConstants.schoolId,
+            PrefConst.schoolId,
             r.id,
           );
 
           await PreferenceUtils.setString(
-            SharedPrefsConstants.schoolName,
+            PrefConst.schoolName,
             r.name,
           );
         }

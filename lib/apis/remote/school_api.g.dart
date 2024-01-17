@@ -6,7 +6,7 @@ part of 'school_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$schoolAPIHash() => r'a038578510bacdfa9dc5dcaffff2b5a5cc154e4a';
+String _$schoolAPIHash() => r'96fefb8799a0fdecf356630114f300e11089417d';
 
 /// See also [schoolAPI].
 @ProviderFor(schoolAPI)

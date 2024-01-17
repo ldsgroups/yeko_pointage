@@ -30,6 +30,7 @@ class SchoolModel {
       'name': name,
       'cycle_id': cycleId,
       'is_technical_education': isTechnicalEducation,
+      'updated_at': DateTime.now().toIso8601String(),
     };
   }
 

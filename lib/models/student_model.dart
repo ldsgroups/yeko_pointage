@@ -30,6 +30,7 @@ class StudentModel {
       'parent_id': parentId,
       'id_number': idNumber,
       'full_name': fullName,
+      'updated_at': DateTime.now().toIso8601String(),
     };
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yeko_pointage/commons/commons.dart';
 import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/features/auth/auth.dart';
@@ -11,6 +12,11 @@ import 'package:yeko_pointage/themes/themes.dart';
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  await Supabase.initialize(
+    url: SupabaseConstants.endPoint,
+    anonKey: SupabaseConstants.projectId,
+  );
 
   await PreferenceUtils.init();
 
@@ -37,10 +43,30 @@ class CoreApp extends ConsumerWidget {
           return ErrorPage(error: error.toString());
         },
         loading: () => const LoadingPage(),
-        data: (isAuthorized) {
+        data: (authValue) {
           FlutterNativeSplash.remove();
-          if (isAuthorized) {
+          if (authValue.isAuthenticated && authValue.isLinkedToASchool) {
             return const ScanPage();
+          } else if (authValue.isAuthenticated &&
+              !authValue.isLinkedToASchool) {
+            AppUtils.infoDialog(
+              context: context,
+              text: "Votre compte n'est pas lié à une école",
+              onPressed: () {
+                ref.read(authControllerProvider.notifier).signOut().then(
+                      (_) => Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute<SignInPage>(
+                          builder: (_) => const SignInPage(),
+                        ),
+                        (route) => false,
+                      ),
+                    );
+
+                Navigator.of(context).pop();
+              },
+            );
+          } else {
+            return const SignInPage();
           }
           return const SignInPage();
         },

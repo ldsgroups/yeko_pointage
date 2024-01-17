@@ -1,4 +1,4 @@
-class SharedPrefsConstants {
+class PrefConst {
   static String token = 'TOKEN';
   static String tokenExpiresAt = 'TOKEN_EXPIRES_AT';
 
@@ -8,4 +8,6 @@ class SharedPrefsConstants {
   static String tabletClassroomOwner = 'TABLET_CLASSROOM_OWNER';
 
   static String classData = 'CLASS_DATA';
+  static String attendanceData = 'ATTENDANCE_DATA';
+  static String participationData = 'PARTICIPATION_DATA';
 }

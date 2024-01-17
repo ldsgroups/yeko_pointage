@@ -1,25 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'class_api.dart';
+part of 'participation_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$classLocalAPIHash() => r'eafd304f6138c592edc72eb27fd2fae620c5dbae';
+String _$participationLocalAPIHash() =>
+    r'63676c0997563f2eb0ce22ce45ce0adbe7fa4655';
 
-/// See also [classLocalAPI].
-@ProviderFor(classLocalAPI)
-final classLocalAPIProvider = AutoDisposeProvider<ClassLocalAPI>.internal(
-  classLocalAPI,
-  name: r'classLocalAPIProvider',
+/// See also [participationLocalAPI].
+@ProviderFor(participationLocalAPI)
+final participationLocalAPIProvider =
+    AutoDisposeProvider<ParticipationLocalAPI>.internal(
+  participationLocalAPI,
+  name: r'participationLocalAPIProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$classLocalAPIHash,
+      : _$participationLocalAPIHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef ClassLocalAPIRef = AutoDisposeProviderRef<ClassLocalAPI>;
+typedef ParticipationLocalAPIRef
+    = AutoDisposeProviderRef<ParticipationLocalAPI>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

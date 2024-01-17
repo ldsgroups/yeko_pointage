@@ -4,14 +4,17 @@ Yeko Pointage est une application mobile qui permet aux professeurs de prendre l
 
 # TODO
   - [x] Sign In Screen
-  - [ ] School Info Popup
+  - [x] School Info Popup
   - [x] Class Assign To The Tablet Select Screen
-  - [ ] Class Assigned Info Popup
+  - [x] Class Assigned Info Popup
   - [ ] Locking Screen
   - [x] Scan Screen
   - [/] Teacher Recognize Popup
+  - [ ] Get teacher data on new course session
+  - [ ] Display teacher data in the UI
   - [ ] Schedule Recognize Popup
   - [x] Home Attendance Screen
-  - [ ] Do You Have to Give A Homework Popup
+  - [x] Do You Have to Give A Homework Popup
   - [ ] Homework Screen
   - [ ] Session End Successful Popup
+  - [ ] Rescan again if the first scan is wrong in the Scan Page

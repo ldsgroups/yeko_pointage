@@ -57,17 +57,23 @@ class _SettingPageState extends ConsumerState<SettingPage> {
       }
       final settingCtrl = ref.read(settingControllerProvider.notifier);
 
-      final response = await settingCtrl.setOwnerToTablet(
+      final res = await settingCtrl.setOwnerToTablet(
         schoolId: widget.school.id,
         classId: selectedClass.value,
       );
 
-      if (response != null) {
+      if (res != null && res.id.isNotEmpty) {
         if (context.mounted) {
-          await Navigator.pushAndRemoveUntil(
-            context,
-            SignInPage.route(),
-            (route) => false,
+          await AppUtils.infoDialog(
+            context: context,
+            text: 'Super, cette tablette appartient désormais à la ${res.name}',
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                ScanPage.route(),
+                (route) => false,
+              );
+            },
           );
         }
       }
@@ -132,7 +138,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton(
+                OutlinedButton(
                   onPressed: setOwnerToTablet,
                   child: const Text('Sauvegarder'),
                 ),

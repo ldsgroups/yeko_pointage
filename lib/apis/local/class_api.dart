@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/models/models.dart';
 
@@ -10,9 +9,8 @@ part 'class_api.g.dart';
 @riverpod
 ClassLocalAPI classLocalAPI(
   ClassLocalAPIRef ref,
-  SharedPreferences sharedPrefs,
 ) =>
-    ClassLocalAPI(sharedPrefs: sharedPrefs);
+    ClassLocalAPI();
 
 abstract class IClassLocalAPI {
   Future<void> cacheClass({required ClassModel? classToCache});
@@ -20,15 +18,13 @@ abstract class IClassLocalAPI {
 }
 
 class ClassLocalAPI implements IClassLocalAPI {
-  ClassLocalAPI({required this.sharedPrefs});
-
-  final SharedPreferences sharedPrefs;
+  ClassLocalAPI();
 
   @override
   Future<ClassModel> getLastClass() {
-    final jsonString = sharedPrefs.getString(SharedPrefsConstants.classData);
+    final jsonString = PreferenceUtils.getString(PrefConst.classData);
 
-    if (jsonString != null) {
+    if (jsonString.isNotEmpty) {
       return Future.value(
         ClassModel.fromJson(
           json: jsonDecode(jsonString) as Mapper<dynamic>,
@@ -42,8 +38,8 @@ class ClassLocalAPI implements IClassLocalAPI {
   @override
   Future<void> cacheClass({required ClassModel? classToCache}) async {
     if (classToCache != null) {
-      await sharedPrefs.setString(
-        SharedPrefsConstants.classData,
+      await PreferenceUtils.setString(
+        PrefConst.classData,
         json.encode(
           classToCache.toJson(),
         ),

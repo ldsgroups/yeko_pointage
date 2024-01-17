@@ -50,8 +50,6 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     Future<void> handleGetSchool(String schoolId) async {
       final authCtrl = ref.read(authControllerProvider.notifier);
       final response = await authCtrl.getSchool(schoolId: schoolId);
-      print('=======================');
-      print(schoolId);
 
       if (response != null) {
         if (context.mounted) {
@@ -78,20 +76,26 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       await AssetsAudioPlayer.newPlayer().open(Audio(AssetConstants.beepSound));
 
       //?: teacher/school--id--fullName
-      //?: school--03f011f4-c8e4-4a2e-8093-f6119026a9fd--Collège Celeste Adjoufou
       final data = barcode.rawValue?.split('--');
-
-      // close camera
-      await cameraController.stop();
 
       if (data?[0] == 'school') {
         await handleGetSchool(data![1]);
-      } else {
+      } else if (data?[0] == 'teacher') {
         if (context.mounted) {
           await Navigator.pushAndRemoveUntil(
             context,
             HomePage.route(),
             (route) => false,
+          );
+        }
+      } else {
+        await restartScan();
+        isScanning.value = true;
+
+        if (context.mounted) {
+          AppUtils.showSnackBar(
+            context,
+            'Oups, nous ne vous reconnaissons pas',
           );
         }
       }
@@ -125,7 +129,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
                           final barcodes = capture.barcodes;
 
                           if (barcodes.isNotEmpty) {
-                            onDetect(barcodes.last);
+                            onDetect(barcodes.first);
                           }
                         },
                       )

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yeko_pointage/models/models.dart';
 
 /// Represents different types of attendance.
 ///
@@ -35,15 +34,8 @@ class AttendanceColorModel {
   final Color color;
 }
 
-AttendanceColorModel getAttendanceColor(List<AttendanceModel> list) {
-  if (list.isEmpty) {
-    return const AttendanceColorModel(
-      label: 'Présent',
-      color: Colors.green,
-    );
-  }
-
-  switch (list.first.status) {
+AttendanceColorModel getAttendanceColor(AttendanceStatus? status) {
+  switch (status) {
     case AttendanceStatus.absent:
       return const AttendanceColorModel(
         label: 'Absent',

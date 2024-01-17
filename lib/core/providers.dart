@@ -1,8 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yeko_pointage/core/constants/application_constants.dart';
-import 'package:yeko_pointage/core/constants/shared_prefs.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'providers.g.dart';
 
@@ -96,61 +94,22 @@ class PreferenceUtils {
   }
 }
 
-// Dio instance used to sign in
+// Supabase
 @riverpod
-Dio dioInstanceAuth(DioInstanceAuthRef ref) {
-  final dio = Dio(
-    BaseOptions(
-      baseUrl: AppConstants.baseUrl,
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 10),
-      contentType: Headers.jsonContentType,
-      // Transform the response data to a String encoded with UTF8.
-      // The default value is [ResponseType.JSON].
-    ),
-  );
-
-  // interceptors
-  // dio.interceptors.add(
-  //   InterceptorsWrapper(
-  //     onRequest: (options, handler) {
-  //       // Do something before request is sent
-  //       return handler.next(options); //continue
-  //     },
-  //     onResponse: (response, handler) {
-  //       // Do something with response data
-  //       return handler.next(response); // continue
-  //     },
-  //     onError: (e, handler) {
-  //       // remove all keys from shared preferences if token is expired
-  //       if (e.response?.statusCode == 401) {
-  //         PreferenceUtils.removeKeys([]);
-  //       }
-
-  //       return handler.next(e); //continue
-  //     },
-  //   ),
-  // );
-
-  return dio;
+SupabaseClient supabaseClient(SupabaseClientRef ref) {
+  return Supabase.instance.client;
 }
 
-// Dio instance already authenticated
 @riverpod
-Dio dioInstance(DioInstanceRef ref) {
-  final dio = Dio();
+GoTrueClient supabaseAuth(SupabaseAuthRef ref) {
+  final client = ref.watch(supabaseClientProvider);
 
-  // set options
-  dio.options.baseUrl = AppConstants.baseUrl;
-  dio.options.connectTimeout = const Duration(seconds: 30);
-  dio.options.receiveTimeout = const Duration(seconds: 30);
-  // headers with token. Remember that token is saved in shared preferences
-  dio.options.headers = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization':
-        'Bearer ${PreferenceUtils.getString(SharedPrefsConstants.token)}',
-  };
+  return client.auth;
+}
 
-  return dio;
+@riverpod
+SupabaseStorageClient supabaseStorage(SupabaseStorageRef ref) {
+  final client = ref.watch(supabaseClientProvider);
+
+  return client.storage;
 }
