@@ -19,4 +19,4 @@ Yeko Pointage est une application mobile qui permet aux professeurs de prendre l
   - [x] Do You Have to Give A Homework Popup
   - [ ] Homework Screen
   - [ ] Session End Successful Popup
-  - [ ] Rescan again if the first scan is wrong in the Scan Page
+  - [x] Rescan again if the first scan is wrong in the Scan Page

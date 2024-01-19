@@ -87,6 +87,8 @@ class AuthController extends _$AuthController {
 
   Future<void> signOut() async {
     await ref.read(authAPIProvider).signOut();
+
+    await PreferenceUtils.removeKeys([]);
   }
 
   Future<SchoolModel?> getSchool({required String schoolId}) async {

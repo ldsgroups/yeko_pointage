@@ -24,10 +24,13 @@ class SchoolAPI implements ISchoolAPI {
   @override
   FutureEither<SchoolModel?> getSchool({required String schoolId}) async {
     try {
-      final response =
-          await _db.from('schools').select().eq('id', schoolId).single().then(
-                (value) => SchoolModel.fromJson(json: value),
-              );
+      final response = await _db
+          .from('schools')
+          .select()
+          .eq('id', schoolId)
+          .eq('state_id', 1)
+          .single()
+          .then((value) => SchoolModel.fromJson(json: value));
 
       return right(response);
     } on PostgrestException catch (_) {

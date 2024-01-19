@@ -52,7 +52,8 @@ class AttendanceModel {
       studentName:
           json['student_name'] == null ? '' : json['student_name'] as String,
       status: toAttendanceStatus(json['status'] as String),
-      isExcused: json['is_excused'] as bool,
+      isExcused:
+          json['is_excused'] == null ? false : json['is_excused'] as bool,
       statusLabelAndColor: getAttendanceColor(
         toAttendanceStatus(json['status'] as String),
       ),

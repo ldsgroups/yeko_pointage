@@ -55,7 +55,7 @@ class AttendanceLocalAPI implements IAttendanceLocalAPI {
         ),
       );
     } else {
-      throw CacheException();
+      // TODO: throw CacheException();
     }
   }
 }
