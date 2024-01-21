@@ -50,7 +50,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
     // final size = MediaQuery.of(context).size;
     // final isTablet = size.width > size.height;
 
-    Future<void> setOwnerToTablet() async {
+    Future<void> setTabletOwner() async {
       if (selectedClass.value.isEmpty) {
         AppUtils.showSnackBar(context, 'Veillez sélectionner une classe');
         return;
@@ -139,7 +139,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 OutlinedButton(
-                  onPressed: setOwnerToTablet,
+                  onPressed: setTabletOwner,
                   child: const Text('Sauvegarder'),
                 ),
               ],

@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yeko_pointage/commons/commons.dart';
 import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/features/auth/auth.dart';
 import 'package:yeko_pointage/features/auth/controllers/auth_controller.dart';
+import 'package:yeko_pointage/l10n/l10n.dart';
 import 'package:yeko_pointage/themes/themes.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  await initializeDateFormatting();
 
   await Supabase.initialize(
     url: SupabaseConstants.endPoint,
@@ -37,6 +43,14 @@ class CoreApp extends ConsumerWidget {
       theme: lightTheme(),
       darkTheme: darkTheme(),
       restorationScopeId: 'app',
+      locale: const Locale('fr'),
+      supportedLocales: L10n.all,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       home: authState.when(
         error: (error, stackTrace) {
           FlutterNativeSplash.remove();

@@ -21,7 +21,7 @@ final classesDataProvider =
 );
 
 typedef _$ClassesData = AutoDisposeNotifier<List<ClassModel>>;
-String _$settingControllerHash() => r'bc6f85bb2c482b9180212b9570ffcc425514a836';
+String _$settingControllerHash() => r'54ae9169be7a9f61e828922fa10925e950496e1b';
 
 /// See also [SettingController].
 @ProviderFor(SettingController)

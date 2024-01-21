@@ -53,7 +53,7 @@ final classesDataProvider =
 );
 
 typedef _$ClassesData = AutoDisposeNotifier<List<ClassModel>>;
-String _$authControllerHash() => r'19f6c1c5d889406946e23587c11528421d18f63f';
+String _$authControllerHash() => r'88d71d1e8f90f88c7059d4071cbcb9a54f3e8a24';
 
 /// See also [AuthController].
 @ProviderFor(AuthController)

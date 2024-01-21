@@ -12,10 +12,6 @@ class StudentList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final attendanceList = ref.watch(attendanceRecordsProvider);
 
-    print(
-      '=====| RES |===== ${attendanceList.map((e) => e.status.name).toList()}',
-    );
-
     return Expanded(
       flex: 3,
       child: GroupedListView(

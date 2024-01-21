@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:yeko_pointage/commons/custom_material_button.dart';
 import 'package:yeko_pointage/core/enums/enums.dart';
 import 'package:yeko_pointage/core/utils/utils.dart';
+import 'package:yeko_pointage/features/home/controllers/home_controller.dart';
 import 'package:yeko_pointage/models/models.dart';
 
-Future<void> optionsBottomSheet(
-  BuildContext context,
-  List<AttendanceModel> attendanceList,
-  WidgetRef ref,
-) {
-  Future<void> handleClose() async {
-    final notPresentStudents = attendanceList
-        .where((e) => e.status != AttendanceStatus.present)
-        .toList();
-
-    // update the remote database
-
-    // close dialog
-    Navigator.of(context).pop();
-
-    // navigate to scan page
-    // await Navigator.pushAndRemoveUntil(context, ScanPage.route(), (route) => false);
+Future<dynamic> optionsBottomSheet({
+  required BuildContext context,
+  required WidgetRef ref,
+  required List<AttendanceModel> attendanceList,
+  required int participatorLen,
+  required void Function({bool? setHomework}) onAction,
+}) {
+  int attendanceStatusLen(AttendanceStatus status) {
+    return attendanceList
+        .where(
+          (e) => e.status == status,
+        )
+        .length;
   }
 
   return showModalBottomSheet(
@@ -39,7 +37,7 @@ Future<void> optionsBottomSheet(
           ),
           ListTile(
             trailing: Text(
-              '${attendanceList.where((e) => e.status == AttendanceStatus.absent).length}',
+              attendanceStatusLen(AttendanceStatus.absent).toString(),
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -49,7 +47,7 @@ Future<void> optionsBottomSheet(
           ),
           ListTile(
             trailing: Text(
-              '${attendanceList.where((e) => e.status == AttendanceStatus.late).length}',
+              attendanceStatusLen(AttendanceStatus.late).toString(),
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -57,45 +55,62 @@ Future<void> optionsBottomSheet(
             ),
             subtitle: const Text('Retards'),
           ),
+          const CsAttendanceParticipatorSwitcher(),
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 20,
               vertical: 8,
             ),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                foregroundColor: Theme.of(context).colorScheme.onSecondary,
-              ),
+            child: CustomMaterialButton(
+              text: 'Terminer la session',
               onPressed: () async {
+                if (participatorLen == 0) {
+                  Navigator.of(context).pop();
+
+                  AppUtils.showSnackBar(
+                    context,
+                    "Veillez d'abord attribuer la participator à au moins un élève",
+                  );
+                  return;
+                }
+
                 Navigator.of(context).pop();
 
                 // show a yes/no dialog to ask the teacher if it was give a homework.
-                return AppUtils.yesOrNoModal(
-                  context: context,
-                  onConfirm: () async {
-                    // close the session.
-                    await handleClose();
-                  },
-                  onCancel: handleClose,
-                );
+                if (context.mounted) {
+                  return AppUtils.yesOrNoModal(
+                    context: context,
+                    onConfirm: () => onAction(setHomework: true),
+                    onCancel: onAction,
+                  );
+                }
               },
-              child: const Text(
-                'Terminer la session',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
             ),
           ),
         ],
       );
     },
   );
+}
+
+class CsAttendanceParticipatorSwitcher extends ConsumerWidget {
+  const CsAttendanceParticipatorSwitcher({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isParticipatorMode = ref.watch(isParticipatorModeProvider);
+
+    return SwitchListTile(
+      selected: isParticipatorMode,
+      activeColor: Colors.green,
+      title: Text(
+        isParticipatorMode ? 'Mode Participator' : 'Mode Appel',
+      ),
+      value: isParticipatorMode,
+      onChanged: (_) {
+        ref.read(isParticipatorModeProvider.notifier).switchMode();
+      },
+    );
+  }
 }

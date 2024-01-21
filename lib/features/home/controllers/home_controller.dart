@@ -16,6 +16,16 @@ class IsAttendanceCheckingCompleted extends _$IsAttendanceCheckingCompleted {
 }
 
 @riverpod
+class IsParticipatorMode extends _$IsParticipatorMode {
+  @override
+  bool build() => false;
+
+  Future<void> switchMode() async {
+    state ? state = false : state = true;
+  }
+}
+
+@riverpod
 class ClassData extends _$ClassData {
   @override
   ClassModel build() => emptyClass;
@@ -150,22 +160,22 @@ class AttendanceRecords extends _$AttendanceRecords {
 }
 
 @riverpod
-class ParticipationRecords extends _$ParticipationRecords {
+class ParticipatorRecords extends _$ParticipatorRecords {
   @override
-  List<ParticipationModel> build() => [];
+  List<ParticipatorModel> build() => [];
 
   Future<void> _updateState({
-    required List<ParticipationModel> val,
+    required List<ParticipatorModel> val,
     bool refresh = false,
   }) async {
     final homeCtrl = ref.read(homeControllerProvider.notifier);
 
     if (refresh) {
-      final atd = await homeCtrl.getParticipations();
+      final atd = await homeCtrl.getParticipators();
       state = atd;
     } else {
-      await homeCtrl.setParticipations(participations: val);
-      final atd = await homeCtrl.getParticipations();
+      await homeCtrl.setParticipators(participators: val);
+      final atd = await homeCtrl.getParticipators();
       state = atd;
     }
   }
@@ -174,35 +184,25 @@ class ParticipationRecords extends _$ParticipationRecords {
     await _updateState(val: [], refresh: true);
   }
 
-  Future<void> updateStudentParticipation(StudentModel student) async {
-    const subjectId = '1';
-
-    final participationRecord = state.firstWhere(
-      (element) => element.studentId == student.id,
-      orElse: () => ParticipationModel(
-        studentId: student.id,
-        subjectId: subjectId,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-    );
-
-    final participationRecordIndex = state.indexOf(participationRecord);
-
-    // update the participation record
-    if (participationRecordIndex == -1) {
+  Future<void> updateStudentParticipator({
+    required int index,
+    required ParticipatorModel data,
+  }) async {
+    // update the participator record
+    if (index == -1) {
       await _updateState(
         val: [
           ...state,
-          participationRecord,
+          data,
         ],
       );
     } else {
-      // remove the participation record from the list
+      // remove the participator record from the list
+      final newState = state.sublist(0, index) + state.sublist(index + 1);
+
       await _updateState(
         val: [
-          ...state.sublist(0, participationRecordIndex),
-          ...state.sublist(participationRecordIndex + 1),
+          ...newState,
         ],
       );
     }
@@ -240,25 +240,25 @@ class HomeController extends _$HomeController {
     await attendanceLocalAPI.cacheAttendances(attendancesToCache: attendances);
   }
 
-  Future<List<ParticipationModel>> getParticipations() async {
-    final participationLocalAPI = ref.read(participationLocalAPIProvider);
+  Future<List<ParticipatorModel>> getParticipators() async {
+    final participatorLocalAPI = ref.read(participatorLocalAPIProvider);
 
-    final response = await participationLocalAPI.getLastParticipations();
+    final response = await participatorLocalAPI.getLastParticipators();
 
     return response;
   }
 
-  Future<void> setParticipations({
-    required List<ParticipationModel> participations,
+  Future<void> setParticipators({
+    required List<ParticipatorModel> participators,
   }) async {
-    final participationLocalAPI = ref.read(participationLocalAPIProvider);
+    final participatorLocalAPI = ref.read(participatorLocalAPIProvider);
 
-    await participationLocalAPI.cacheParticipations(
-      participationsToCache: participations,
+    await participatorLocalAPI.cacheParticipators(
+      participatorsToCache: participators,
     );
   }
 
-  FutureEitherVoid createAttendanceAndParticipationAndHomework({
+  FutureEither<String> createAttendanceAndParticipatorAndHomework({
     HomeworkModel? homework,
   }) async {
     state = true;
@@ -266,15 +266,15 @@ class HomeController extends _$HomeController {
     final classAPI = ref.read(classAPIProvider);
 
     final attendanceList = ref.read(attendanceRecordsProvider);
-    final participationList = ref.read(participationRecordsProvider);
+    final participatorList = ref.read(participatorRecordsProvider);
 
     final notPresentStudents = attendanceList
         .where((e) => e.status != AttendanceStatus.present)
         .toList();
 
-    final response = await classAPI.createAttendanceAndParticipationAndHomework(
+    final response = await classAPI.createAttendanceAndParticipatorAndHomework(
       attendances: notPresentStudents,
-      participations: participationList,
+      participators: participatorList,
       homework: homework,
     );
 

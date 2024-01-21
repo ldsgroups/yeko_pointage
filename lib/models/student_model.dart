@@ -8,6 +8,8 @@ class StudentModel {
     required this.parentId,
     required this.idNumber,
     required this.fullName,
+    required this.firstName,
+    required this.lastName,
   });
 
   factory StudentModel.fromJson({required Mapper<dynamic> json}) {
@@ -15,13 +17,18 @@ class StudentModel {
       id: json['id'] as String,
       parentId: json['parent_id'] as String,
       idNumber: json['id_number'] as String,
-      fullName: json['full_name'] as String,
+      firstName: json['first_name'] as String,
+      lastName: json['last_name'] as String,
+      fullName:
+          '${json['last_name'] as String} ${json['first_name'] as String}',
     );
   }
 
   final String id;
   final String parentId;
   final String idNumber;
+  final String firstName;
+  final String lastName;
   final String fullName;
 
   Mapper<dynamic> toJson() {
@@ -29,6 +36,8 @@ class StudentModel {
       'id': id,
       'parent_id': parentId,
       'id_number': idNumber,
+      'first_name': firstName,
+      'last_name': lastName,
       'full_name': fullName,
       'updated_at': DateTime.now().toIso8601String(),
     };
@@ -38,12 +47,16 @@ class StudentModel {
     String? id,
     String? parentId,
     String? idNumber,
+    String? firstName,
+    String? lastName,
     String? fullName,
   }) {
     return StudentModel(
       id: id ?? this.id,
       parentId: parentId ?? this.parentId,
       idNumber: idNumber ?? this.idNumber,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
       fullName: fullName ?? this.fullName,
     );
   }

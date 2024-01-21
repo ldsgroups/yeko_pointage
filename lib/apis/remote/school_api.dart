@@ -32,7 +32,7 @@ class SchoolAPI implements ISchoolAPI {
           .single()
           .then((value) => SchoolModel.fromJson(json: value));
 
-      return right(response);
+      return right(response.id.isEmpty ? null : response);
     } on PostgrestException catch (_) {
       return left(
         ServerFailure(

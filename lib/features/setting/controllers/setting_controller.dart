@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_manual_providers_as_generated_provider_dependency
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:yeko_pointage/apis/apis.dart';
+import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/models/models.dart';
 
 part 'setting_controller.g.dart';
@@ -45,6 +46,12 @@ class SettingController extends _$SettingController {
     );
 
     return payload.fold((_) => null, (r) async {
+      await PreferenceUtils.removeKeys([]);
+      await PreferenceUtils.setString(
+        PrefConst.classId,
+        r!.id,
+      );
+
       await classLocalAPI.cacheClass(classToCache: r);
       return r;
     });

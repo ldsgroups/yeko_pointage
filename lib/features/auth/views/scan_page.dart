@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/features/auth/controllers/auth_controller.dart';
-import 'package:yeko_pointage/features/home/controllers/home_controller.dart';
 import 'package:yeko_pointage/features/home/views/home_view.dart';
 import 'package:yeko_pointage/features/setting/views/views.dart';
 
@@ -93,17 +92,17 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       if (data?[0] == 'school') {
         await handleGetSchool(data![1]);
       } else if (data?[0] == 'teacher') {
-        final homeCtrl = ref.read(homeControllerProvider.notifier);
-        final classData = await homeCtrl.getClass();
-
-        if (classData.id.isNotEmpty) {
-          if (context.mounted) {
-            await Navigator.pushAndRemoveUntil(
+        if (PreferenceUtils.getString(PrefConst.classId).isNotEmpty) {
+          if (!context.mounted) return;
+          return AppUtils.infoDialog(
+            context: context,
+            text: 'M. Soro, rebonjour et bon cours',
+            onPressed: () => Navigator.pushAndRemoveUntil(
               context,
               HomePage.route(),
               (route) => false,
-            );
-          }
+            ),
+          );
         } else {
           if (context.mounted) {
             await AppUtils.infoDialog(

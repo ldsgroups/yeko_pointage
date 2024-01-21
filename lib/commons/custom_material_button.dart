@@ -27,10 +27,10 @@ class CustomMaterialButton extends StatelessWidget {
     return MaterialButton(
       minWidth: double.infinity,
       height: 50,
-      color: isInverted ? colorScheme.inverseSurface : colorScheme.primary,
-      textColor: isInverted ? colorScheme.onTertiary : colorScheme.onPrimary,
+      color: isInverted ? colorScheme.inverseSurface : colorScheme.secondary,
+      textColor: isInverted ? colorScheme.onTertiary : colorScheme.onSecondary,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
       ),
       onPressed: isLoading ? null : onPressed,
       child: Row(
@@ -39,7 +39,7 @@ class CustomMaterialButton extends StatelessWidget {
           if (icon != null && iconPosition == IconPosition.left)
             Icon(
               icon,
-              color: colorScheme.onPrimary,
+              color: colorScheme.onSecondary,
               size: 24,
             ),
           if (icon != null && iconPosition == IconPosition.left)
@@ -48,11 +48,11 @@ class CustomMaterialButton extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: colorScheme.primary,
+                color: colorScheme.secondary,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: CircularProgressIndicator(
-                color: colorScheme.onPrimary,
+                color: colorScheme.onSecondary,
               ),
             )
           else
@@ -68,7 +68,7 @@ class CustomMaterialButton extends StatelessWidget {
           if (icon != null && iconPosition == IconPosition.right)
             Icon(
               icon,
-              color: colorScheme.onPrimary,
+              color: colorScheme.onSecondary,
               size: 24,
             ),
         ],

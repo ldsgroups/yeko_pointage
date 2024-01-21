@@ -8,6 +8,7 @@ class HomeworkModel {
     required this.classId,
     required this.subjectId,
     required this.dueDate,
+    required this.itWillBeANote,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -18,6 +19,7 @@ class HomeworkModel {
       classId: json['class_id'] as String,
       subjectId: json['subject_id'] as String,
       dueDate: DateTime.parse(json['due_date'] as String),
+      itWillBeANote: json['it_will_be_a_note'] as bool,
       createdAt: json['created_at'] == null
           ? DateTime.now()
           : DateTime.parse(json['created_at'] as String),
@@ -31,6 +33,7 @@ class HomeworkModel {
   final String classId;
   final String subjectId;
   final DateTime dueDate;
+  final bool itWillBeANote;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -39,6 +42,7 @@ class HomeworkModel {
     String? classId,
     String? subjectId,
     DateTime? dueDate,
+    bool? itWillBeANote,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -47,6 +51,7 @@ class HomeworkModel {
       classId: classId ?? this.classId,
       subjectId: subjectId ?? this.subjectId,
       dueDate: dueDate ?? this.dueDate,
+      itWillBeANote: itWillBeANote ?? this.itWillBeANote,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -57,13 +62,16 @@ class HomeworkModel {
       'class_id': classId,
       'subject_id': subjectId,
       'due_date': dueDate.toIso8601String(),
-      'updated_at': DateTime.now().toIso8601String(),
+      'it_will_be_a_note': itWillBeANote,
     };
   }
 
   @override
   String toString() {
-    return 'HomeworkModel(id: $id, classId: $classId, subjectId: $subjectId, dueDate: $dueDate, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'HomeworkModel(id: $id, classId: $classId, subjectId: $subjectId, '
+        'dueDate: $dueDate, itWillBeANote: $itWillBeANote, createdAt: '
+        '$createdAt, updatedAt: '
+        '$updatedAt)';
   }
 
   @override
@@ -75,6 +83,7 @@ class HomeworkModel {
         other.classId == classId &&
         other.subjectId == subjectId &&
         other.dueDate == dueDate &&
+        other.itWillBeANote == itWillBeANote &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt;
   }
@@ -85,6 +94,7 @@ class HomeworkModel {
         classId.hashCode ^
         subjectId.hashCode ^
         dueDate.hashCode ^
+        itWillBeANote.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode;
   }

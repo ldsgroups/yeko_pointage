@@ -21,9 +21,9 @@ abstract class IClassAPI {
     required String classId,
   });
 
-  FutureEitherVoid createAttendanceAndParticipationAndHomework({
+  FutureEither<String> createAttendanceAndParticipatorAndHomework({
     required List<AttendanceModel> attendances,
-    required List<ParticipationModel> participations,
+    required List<ParticipatorModel> participators,
     HomeworkModel? homework,
   });
 }
@@ -66,7 +66,7 @@ class ClassAPI implements IClassAPI {
     try {
       final response = await _db
           .from('classes')
-          .select()
+          .select('*, students (*)')
           .eq('school_id', schoolId)
           .eq('id', classId)
           .then(
@@ -76,13 +76,15 @@ class ClassAPI implements IClassAPI {
           );
 
       return right(response);
-    } on PostgrestException catch (_) {
+    } on PostgrestException catch (err) {
+      print('[E_POSTGRES]: ${err.message}');
       return left(
         ServerFailure(
           errorMessage: 'Une erreur est survenue',
         ),
       );
     } catch (e) {
+      print('[E_LOCAL]: $e');
       return left(
         ServerFailure(
           errorMessage: 'Une erreur est survenue',
@@ -92,30 +94,26 @@ class ClassAPI implements IClassAPI {
   }
 
   @override
-  FutureEitherVoid createAttendanceAndParticipationAndHomework({
+  FutureEither<String> createAttendanceAndParticipatorAndHomework({
     required List<AttendanceModel> attendances,
-    required List<ParticipationModel> participations,
+    required List<ParticipatorModel> participators,
     HomeworkModel? homework,
   }) async {
     try {
       final attendancesJson = attendances.map((e) => e.toJson()).toList();
-      final participationsJson = participations.map((e) => e.toJson()).toList();
+      final participatorsJson = participators.map((e) => e.toJson()).toList();
       final homeworkJson = homework?.toJson();
 
-      final res = await _db.rpc<String>(
-        'create_attendance_and_participation_and_homework',
+      final response = await _db.rpc<String>(
+        'create_attendance_and_participator_and_homework',
         params: {
           'attendances': attendancesJson,
-          'participations': participationsJson,
+          'participators': participatorsJson,
           'homework': homeworkJson,
         },
       );
 
-      print('====================');
-      print('$res');
-      print('PASSED');
-
-      return right(null);
+      return right(response);
     } on PostgrestException catch (err) {
       if (kDebugMode) {
         print('[E_POSTGRES] ${err.message}');
@@ -123,7 +121,7 @@ class ClassAPI implements IClassAPI {
 
       return left(
         ServerFailure(
-          errorMessage: 'Une erreur est survenue',
+          errorMessage: "Nous n'avons pas pu enregister les données, réessayer",
         ),
       );
     } catch (e) {
