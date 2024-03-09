@@ -1,44 +1,6 @@
 {
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
-  },
-  "files.watcherExclude": {
-    "**/.git/objects/**": true,
-    "**/node_modules/**": true,
-    "**/.idea/**": true,
-    "**/android/**": true,
-    "**/ios/**": true,
-    "**/build/**": true
-  },
-  "cSpell.language": "en,fr",
-  "cSpell.ignorePaths": [
-    "package-lock.json",
-    "node_modules",
-    "vscode-extension",
-    ".git/objects",
-    ".vscode",
-    ".vscode-insiders",
-    "dart_tool",
-    ".idea",
-    "android",
-    "build",
-    "ios",
-    ".flutter-plugins",
-    ".flutter-plugins-dependencies",
-    ".gitignore",
-    "custom_lint.log",
-    "pubspec.lock",
-    ".metadata",
-    "yeko_pointage.iml"
-  ],
   "cSpell.words": [
     "fpdart",
-    "grey",
-    "LTRB",
-    "Postgrest",
-    "prefs",
-    "unfocus",
     "yeko"
   ]
 }
