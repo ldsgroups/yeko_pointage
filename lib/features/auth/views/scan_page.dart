@@ -111,7 +111,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
                 ),
                 colDivider,
                 buildTeacherSpecification('Classe', '5ème 2'),
-                buildTeacherSpecification('Timming', '10h15 - 12h00'),
+                buildTeacherSpecification('Timing', '10h15 - 12h00'),
               ],
             ),
             onPressed: () => Navigator.pushAndRemoveUntil(
@@ -192,7 +192,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
             SizedBox(
               width: size.width * 0.8,
               child: Text(
-                'Veillez scanner votre QR Code pour vous identifier'
+                'Veuillez scanner votre QR Code pour vous identifier'
                     .toUpperCase(),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge,
@@ -202,8 +202,28 @@ class _ScanPageState extends ConsumerState<ScanPage> {
 
             ElevatedButton(
               onPressed: () async {
-                await restartScan();
-                isScanning.value = true;
+                return AppUtils.infoDialog(
+                  context: context,
+                  child: Column(
+                    children: [
+                      Text('Akwaba M. $teacherName'.toUpperCase()),
+                      Text(
+                        'Prof de Math'.toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 20,
+                          letterSpacing: 1,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      colDivider,
+                      buildTeacherSpecification('Classe', '5ème 2'),
+                      buildTeacherSpecification('Timing', '10h15 - 12h00'),
+                    ],
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                );
+                // await restartScan();
+                // isScanning.value = true;
               },
               child: const Text('Relancer le scan'),
             ),

@@ -77,14 +77,18 @@ class ClassAPI implements IClassAPI {
 
       return right(response);
     } on PostgrestException catch (err) {
-      print('[E_POSTGRES]: ${err.message}');
+      if (kDebugMode) {
+        print('[E_POSTGRES]: ${err.message}');
+      }
       return left(
         ServerFailure(
           errorMessage: 'Une erreur est survenue',
         ),
       );
     } catch (e) {
-      print('[E_LOCAL]: $e');
+      if (kDebugMode) {
+        print('[E_LOCAL]: $e');
+      }
       return left(
         ServerFailure(
           errorMessage: 'Une erreur est survenue',
@@ -121,7 +125,8 @@ class ClassAPI implements IClassAPI {
 
       return left(
         ServerFailure(
-          errorMessage: "Nous n'avons pas pu enregister les données, réessayer",
+          errorMessage:
+              "Nous n'avons pas pu enregistrer les données, réessayer",
         ),
       );
     } catch (e) {

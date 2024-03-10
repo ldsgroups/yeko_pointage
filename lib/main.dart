@@ -6,10 +6,10 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:yeko_pointage/commons/commons.dart';
+// import 'package:yeko_pointage/commons/commons.dart';
 import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/features/auth/auth.dart';
-import 'package:yeko_pointage/features/auth/controllers/auth_controller.dart';
+// import 'package:yeko_pointage/features/auth/controllers/auth_controller.dart';
 import 'package:yeko_pointage/l10n/l10n.dart';
 import 'package:yeko_pointage/themes/themes.dart';
 
@@ -48,7 +48,7 @@ class CoreApp extends ConsumerWidget {
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       home: const ScanPage(),
