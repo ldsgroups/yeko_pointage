@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:yeko_pointage/commons/commons.dart';
 import 'package:yeko_pointage/core/core.dart';
 import 'package:yeko_pointage/features/auth/controllers/auth_controller.dart';
 import 'package:yeko_pointage/features/home/views/home_view.dart';
@@ -45,6 +46,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
 
   @override
   Widget build(BuildContext context) {
+    const teacherName = 'Ibrahim Koné';
     final isScanning = useState(true);
 
     final size = MediaQuery.of(context).size;
@@ -96,7 +98,22 @@ class _ScanPageState extends ConsumerState<ScanPage> {
           if (!context.mounted) return;
           return AppUtils.infoDialog(
             context: context,
-            text: 'M. Soro, rebonjour et bon cours',
+            child: Column(
+              children: [
+                Text('Akwaba M. $teacherName'.toUpperCase()),
+                Text(
+                  'Prof de Maths'.toUpperCase(),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    letterSpacing: 1,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                colDivider,
+                buildTeacherSpecification('Classe', '5ème 2'),
+                buildTeacherSpecification('Timming', '10h15 - 12h00'),
+              ],
+            ),
             onPressed: () => Navigator.pushAndRemoveUntil(
               context,
               HomePage.route(),
@@ -171,6 +188,16 @@ class _ScanPageState extends ConsumerState<ScanPage> {
                       ),
               ),
             ),
+            largeColDivider,
+            SizedBox(
+              width: size.width * 0.8,
+              child: Text(
+                'Veillez scanner votre QR Code pour vous identifier'
+                    .toUpperCase(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
             const Spacer(flex: 3),
 
             ElevatedButton(
@@ -185,6 +212,26 @@ class _ScanPageState extends ConsumerState<ScanPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Row buildTeacherSpecification(String leftText, String rightText) {
+    const textTheme = TextStyle(fontWeight: FontWeight.w700);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          leftText.toUpperCase(),
+          style: textTheme.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+        Text(
+          ': $rightText'.toUpperCase(),
+          style: textTheme,
+        ),
+      ],
     );
   }
 }

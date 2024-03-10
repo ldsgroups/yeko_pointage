@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:yeko_pointage/commons/commons.dart';
 import 'package:yeko_pointage/core/core.dart';
@@ -72,12 +74,14 @@ class AppUtils {
 
   static Future<void> infoDialog({
     required BuildContext context,
-    required String text,
+    String text = '',
+    Widget? child,
     required void Function()? onPressed,
   }) {
     return showDialog(
       context: context,
       barrierDismissible: false,
+      barrierColor: Colors.black87,
       builder: (context) {
         return Dialog(
           insetAnimationDuration: const Duration(
@@ -96,18 +100,23 @@ class AppUtils {
               colDivider,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Text(
-                  text,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
+                child: child ??
+                    Text(
+                      text,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
               ),
               largeColDivider,
               const Divider(),
-              TextButton(
-                onPressed: onPressed,
-                child: const Text('OK'),
+              GestureDetector(
+                onTap: onPressed,
+                child: const SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: Center(child: Text('OK')),
+                ),
               ),
             ],
           ),

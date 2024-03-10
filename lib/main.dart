@@ -35,7 +35,7 @@ class CoreApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-    final authState = ref.watch(isAuthenticatedProvider);
+    // final authState = ref.watch(isAuthenticatedProvider);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -51,40 +51,41 @@ class CoreApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      home: authState.when(
-        error: (error, stackTrace) {
-          FlutterNativeSplash.remove();
-          return ErrorPage(error: error.toString());
-        },
-        loading: () => const LoadingPage(),
-        data: (authValue) {
-          FlutterNativeSplash.remove();
-          if (authValue.isAuthenticated && authValue.isLinkedToASchool) {
-            return const ScanPage();
-          } else if (authValue.isAuthenticated &&
-              !authValue.isLinkedToASchool) {
-            AppUtils.infoDialog(
-              context: context,
-              text: "Votre compte n'est pas lié à une école",
-              onPressed: () {
-                ref.read(authControllerProvider.notifier).signOut().then(
-                      (_) => Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute<SignInPage>(
-                          builder: (_) => const SignInPage(),
-                        ),
-                        (route) => false,
-                      ),
-                    );
-
-                Navigator.of(context).pop();
-              },
-            );
-          } else {
-            return const SignInPage();
-          }
-          return const SignInPage();
-        },
-      ),
+      home: const ScanPage(),
+      // home: authState.when(
+      //   error: (error, stackTrace) {
+      //     FlutterNativeSplash.remove();
+      //     return ErrorPage(error: error.toString());
+      //   },
+      //   loading: () => const LoadingPage(),
+      //   data: (authValue) {
+      //     FlutterNativeSplash.remove();
+      //     if (authValue.isAuthenticated && authValue.isLinkedToASchool) {
+      //       return const ScanPage();
+      //     } else if (authValue.isAuthenticated &&
+      //         !authValue.isLinkedToASchool) {
+      //       AppUtils.infoDialog(
+      //         context: context,
+      //         text: "Votre compte n'est pas lié à une école",
+      //         onPressed: () {
+      //           ref.read(authControllerProvider.notifier).signOut().then(
+      //                 (_) => Navigator.of(context).pushAndRemoveUntil(
+      //                   MaterialPageRoute<SignInPage>(
+      //                     builder: (_) => const SignInPage(),
+      //                   ),
+      //                   (route) => false,
+      //                 ),
+      //               );
+      //
+      //           Navigator.of(context).pop();
+      //         },
+      //       );
+      //     } else {
+      //       return const SignInPage();
+      //     }
+      //     return const SignInPage();
+      //   },
+      // ),
     );
   }
 }
