@@ -44,7 +44,7 @@ class PhonePage extends HookConsumerWidget {
           if (context.mounted) {
             await AppUtils.infoDialog(
               context: context,
-              text: 'M. Soro, merci pour le cours dispensé',
+              text: 'M. Thibault, merci pour le cours dispensé',
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.pushAndRemoveUntil(
