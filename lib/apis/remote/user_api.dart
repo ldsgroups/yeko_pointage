@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -36,13 +37,17 @@ class UserAPI implements IUserAPI {
           .then((value) => UserModel.fromJson(json: value));
 
       return right(response);
-    } on PostgrestException catch (_) {
+    } on PostgrestException catch (err) {
+      if (kDebugMode) {
+        print('[E_POSTGRES] ${err.message}');
+      }
       return left(
-        ServerFailure(
-          errorMessage: 'Une erreur est survenue',
-        ),
+        ServerFailure(errorMessage: 'Une erreur est survenue'),
       );
     } catch (e) {
+      if (kDebugMode) {
+        print('[E_LOCAL] $e');
+      }
       return left(ServerFailure(errorMessage: 'Une erreur est survenue'));
     }
   }
