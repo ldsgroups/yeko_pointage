@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:yeko_pointage/commons/custom_material_button.dart';
 import 'package:yeko_pointage/core/enums/enums.dart';
 import 'package:yeko_pointage/core/utils/utils.dart';
-import 'package:yeko_pointage/features/home/controllers/home_controller.dart';
 import 'package:yeko_pointage/models/models.dart';
 
 Future<dynamic> optionsBottomSheet({
@@ -55,7 +54,7 @@ Future<dynamic> optionsBottomSheet({
             ),
             subtitle: const Text('Retards'),
           ),
-          const CsAttendanceParticipatorSwitcher(),
+          // const CsAttendanceParticipatorSwitcher(),
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -63,7 +62,7 @@ Future<dynamic> optionsBottomSheet({
               vertical: 8,
             ),
             child: CustomMaterialButton(
-              text: 'Terminer la session',
+              text: 'Clôturer la session',
               onPressed: () async {
                 if (participatorLen == 0) {
                   Navigator.of(context).pop();
@@ -94,23 +93,23 @@ Future<dynamic> optionsBottomSheet({
   );
 }
 
-class CsAttendanceParticipatorSwitcher extends ConsumerWidget {
-  const CsAttendanceParticipatorSwitcher({super.key});
+// class CsAttendanceParticipatorSwitcher extends ConsumerWidget {
+//   const CsAttendanceParticipatorSwitcher({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isParticipatorMode = ref.watch(isParticipatorModeProvider);
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final isParticipatorMode = ref.watch(isParticipatorModeProvider);
 
-    return SwitchListTile(
-      selected: isParticipatorMode,
-      activeColor: Colors.green,
-      title: Text(
-        isParticipatorMode ? 'Mode Participator' : 'Mode Appel',
-      ),
-      value: isParticipatorMode,
-      onChanged: (_) {
-        ref.read(isParticipatorModeProvider.notifier).switchMode();
-      },
-    );
-  }
-}
+//     return SwitchListTile(
+//       selected: isParticipatorMode,
+//       activeColor: Colors.green,
+//       title: Text(
+//         isParticipatorMode ? 'Mode Participator' : 'Mode Appel',
+//       ),
+//       value: isParticipatorMode,
+//       onChanged: (_) {
+//         ref.read(isParticipatorModeProvider.notifier).switchMode();
+//       },
+//     );
+//   }
+// }

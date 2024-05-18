@@ -10,15 +10,15 @@ class CustomMaterialButton extends StatelessWidget {
     this.isLoading = false,
     this.isInverted = false,
     this.iconPosition = IconPosition.left,
-    this.onPressed,
-  });
+    required this.onPressed,
+  }); // Enforce required onPressed
 
   final String text;
   final IconData? icon;
   final bool isLoading;
   final bool isInverted;
   final IconPosition iconPosition;
-  final void Function()? onPressed;
+  final void Function() onPressed; // Make onPressed non-nullable
 
   @override
   Widget build(BuildContext context) {
@@ -32,47 +32,44 @@ class CustomMaterialButton extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      onPressed: isLoading ? null : onPressed,
+      onPressed: isLoading ? null : onPressed, // Ternary for disabled state
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (icon != null && iconPosition == IconPosition.left)
-            Icon(
-              icon,
-              color: colorScheme.onSecondary,
-              size: 24,
-            ),
-          if (icon != null && iconPosition == IconPosition.left)
-            const SizedBox(width: 8),
-          if (isLoading)
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: colorScheme.secondary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: CircularProgressIndicator(
-                color: colorScheme.onSecondary,
-              ),
-            )
-          else
-            Text(
-              text,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          if (icon != null && iconPosition == IconPosition.right)
-            const SizedBox(width: 8),
-          if (icon != null && iconPosition == IconPosition.right)
-            Icon(
-              icon,
-              color: colorScheme.onSecondary,
-              size: 24,
-            ),
+          if (icon != null)
+            _buildIcon(context, icon, iconPosition == IconPosition.left),
+          if (icon != null) const SizedBox(width: 8),
+          _buildContent(context, isLoading, text),
+          if (icon != null) const SizedBox(width: 8),
+          if (icon != null)
+            _buildIcon(context, icon, iconPosition == IconPosition.right),
         ],
       ),
     );
+  }
+
+  Widget _buildIcon(BuildContext ctx, IconData? icon, bool show) {
+    return Offstage(
+      offstage: !show,
+      child: Icon(
+        icon,
+        color: Theme.of(ctx).colorScheme.onSecondary,
+        size: 24,
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext ctx, bool isLoading, String text) {
+    return isLoading
+        ? CircularProgressIndicator(
+            color: Theme.of(ctx).colorScheme.onSecondary,
+          )
+        : Text(
+            text,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          );
   }
 }

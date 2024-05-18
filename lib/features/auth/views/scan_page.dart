@@ -102,7 +102,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
               children: [
                 Text('Akwaba M. $teacherName'.toUpperCase()),
                 Text(
-                  'Prof de Maths'.toUpperCase(),
+                  'Prof de Math'.toUpperCase(),
                   style: const TextStyle(
                     fontSize: 20,
                     letterSpacing: 1,
@@ -114,11 +114,14 @@ class _ScanPageState extends ConsumerState<ScanPage> {
                 buildTeacherSpecification('Timing', '10h15 - 12h00'),
               ],
             ),
-            onPressed: () => Navigator.pushAndRemoveUntil(
-              context,
-              HomePage.route(),
-              (route) => false,
-            ),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                context,
+                HomePage.route(),
+                (route) => false,
+              );
+            },
           );
         } else {
           if (context.mounted) {
@@ -202,28 +205,8 @@ class _ScanPageState extends ConsumerState<ScanPage> {
 
             ElevatedButton(
               onPressed: () async {
-                return AppUtils.infoDialog(
-                  context: context,
-                  child: Column(
-                    children: [
-                      Text('Akwaba M. $teacherName'.toUpperCase()),
-                      Text(
-                        'Prof de Math'.toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          letterSpacing: 1,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      colDivider,
-                      buildTeacherSpecification('Classe', '5ème 2'),
-                      buildTeacherSpecification('Timing', '10h15 - 12h00'),
-                    ],
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                );
-                // await restartScan();
-                // isScanning.value = true;
+                await restartScan();
+                isScanning.value = true;
               },
               child: const Text('Relancer le scan'),
             ),

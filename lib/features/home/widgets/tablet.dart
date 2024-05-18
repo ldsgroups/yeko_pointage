@@ -54,11 +54,11 @@ class TabletPage extends HookConsumerWidget {
                 child: Column(
                   children: [
                     SearchBar(
-                      elevation: const MaterialStatePropertyAll<double>(1),
+                      elevation: const WidgetStatePropertyAll<double>(1),
                       controller: searchController,
                       hintText: 'Rechercher par matricule ou nom',
                       leading: const Icon(Icons.search),
-                      padding: const MaterialStatePropertyAll<EdgeInsets>(
+                      padding: const WidgetStatePropertyAll<EdgeInsets>(
                         EdgeInsets.symmetric(horizontal: 16),
                       ),
                     ),

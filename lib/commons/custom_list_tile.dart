@@ -74,7 +74,7 @@ class CustomListTile extends StatelessWidget {
       subtitle: Text(
         subtitle.length > 44 ? '${subtitle.substring(0, 44)}...' : subtitle,
         style: Theme.of(context).textTheme.bodySmall!.copyWith(
-              color: colorScheme.onBackground.withOpacity(0.6),
+              color: colorScheme.onSurface.withOpacity(0.6),
             ),
       ),
       trailing: trailingSubtitle == null

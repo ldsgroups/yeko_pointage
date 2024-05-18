@@ -15,15 +15,15 @@ class IsAttendanceCheckingCompleted extends _$IsAttendanceCheckingCompleted {
   }
 }
 
-@riverpod
-class IsParticipatorMode extends _$IsParticipatorMode {
-  @override
-  bool build() => false;
+// @riverpod
+// class IsParticipatorMode extends _$IsParticipatorMode {
+//   @override
+//   bool build() => false;
 
-  Future<void> switchMode() async {
-    state ? state = false : state = true;
-  }
-}
+//   Future<void> switchMode() async {
+//     state ? state = false : state = true;
+//   }
+// }
 
 @riverpod
 class ClassData extends _$ClassData {

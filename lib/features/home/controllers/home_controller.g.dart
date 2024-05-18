@@ -23,23 +23,6 @@ final isAttendanceCheckingCompletedProvider =
 );
 
 typedef _$IsAttendanceCheckingCompleted = AutoDisposeNotifier<bool>;
-String _$isParticipatorModeHash() =>
-    r'd9e1e6536160a6d4ce2ec5f2ba65af239b88e554';
-
-/// See also [IsParticipatorMode].
-@ProviderFor(IsParticipatorMode)
-final isParticipatorModeProvider =
-    AutoDisposeNotifierProvider<IsParticipatorMode, bool>.internal(
-  IsParticipatorMode.new,
-  name: r'isParticipatorModeProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$isParticipatorModeHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$IsParticipatorMode = AutoDisposeNotifier<bool>;
 String _$classDataHash() => r'2e37a0be2864e1f52bb042a501761cc9cb342493';
 
 /// See also [ClassData].
