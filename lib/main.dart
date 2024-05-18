@@ -35,13 +35,16 @@ class CoreApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    final brightness = View.of(context).platformDispatcher.platformBrightness;
+    final textTheme = createTextTheme(context, 'Open Sans', 'Nunito Sans');
+    final theme = MaterialTheme(textTheme);
+
     final authState = ref.watch(isAuthenticatedProvider);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: AppConstants.appDisplayName,
-      theme: lightTheme(),
-      darkTheme: darkTheme(),
+      theme: brightness == Brightness.light ? theme.light() : theme.dark(),
       restorationScopeId: 'app',
       locale: const Locale('fr'),
       supportedLocales: L10n.all,
